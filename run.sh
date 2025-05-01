@@ -1,4 +1,4 @@
 #!/bin/sh
 
 govulncheck ./...
-go run .
+go run ./cmd/web .
