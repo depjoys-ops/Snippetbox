@@ -27,7 +27,7 @@ func main() {
 	
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		AddSource: true,
+		AddSource: false,
 		Level: slog.LevelInfo,
 	}))
 	
