@@ -58,7 +58,6 @@ type snippetCreateForm struct {
     Title       		string
     Content     		string
     Expires     		int
-    FieldErrors 		map[string]string
 	validator.Validator `form:"-"`
 }
 
