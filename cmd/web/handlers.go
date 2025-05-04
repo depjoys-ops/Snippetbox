@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
-	"unicode/utf8"
 
 	"github.com/depjoys-ops/Snippetbox/internal/models"
 	"github.com/depjoys-ops/Snippetbox/internal/validator"
