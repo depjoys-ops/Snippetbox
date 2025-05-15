@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"github.com/depjoys-ops/Snippetbox/internal/assert"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func Test_ping(t *testing.T) {
+func Test_ping_isolated(t *testing.T) {
+
 	rr := httptest.NewRecorder()
 	r, err := http.NewRequest(http.MethodGet, "/", nil)
 	if err != nil {
@@ -29,4 +31,31 @@ func Test_ping(t *testing.T) {
 
 	body = bytes.TrimSpace(body)
 	assert.Equal(t, string(body), "OK")
+
+}
+
+func Test_ping_EndToEnd(t *testing.T) {
+
+	app := &application{
+		logger: slog.New(slog.DiscardHandler),
+	}
+
+	ts := httptest.NewTLSServer(app.routes())
+	defer ts.Close()
+
+	rs, err := ts.Client().Get(ts.URL + "/ping")
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, rs.StatusCode, http.StatusOK)
+
+	defer rs.Body.Close()
+	body, err := io.ReadAll(rs.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body = bytes.TrimSpace(body)
+
+	assert.Equal(t, string(body), "OK")
+
 }
