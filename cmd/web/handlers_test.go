@@ -59,3 +59,15 @@ func Test_ping_EndToEnd(t *testing.T) {
 	assert.Equal(t, string(body), "OK")
 
 }
+
+func Test_ping_EndToEnd_with_testutils_helper(t *testing.T) {
+	app := newTestApplication(t)
+
+	testServer := newTestServer(t, app.routes())
+
+	status, header, body := testServer.get(t, "/ping")
+
+	assert.Equal(t, status, 200)
+	assert.Equal(t, header.Get("Referrer-Policy"), "origin-when-cross-origin")
+	assert.Equal(t, body, "OK")
+}
