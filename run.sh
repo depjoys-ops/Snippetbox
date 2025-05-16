@@ -1,8 +1,9 @@
 #!/bin/sh
 
 go mod tidy
-go mod verify 
+go mod verify
 govulncheck ./...
+gofmt -w .
 
 if [ $# -eq 0 ]; then
   go run ./cmd/web
