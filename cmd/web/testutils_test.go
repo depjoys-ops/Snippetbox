@@ -8,11 +8,29 @@ import (
 	"net/http/cookiejar"
 	"net/http/httptest"
 	"testing"
+	"time"
+
+	"github.com/alexedwards/scs/v2"
+	"github.com/depjoys-ops/Snippetbox/internal/models/mocks"
 )
 
 func newTestApplication(t *testing.T) *application {
+
+	templateCacheMock, err := newTemplateCache()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sessionManagerMock := scs.New()
+	sessionManagerMock.Lifetime = 12 * time.Hour
+	sessionManagerMock.Cookie.Secure = true
+
 	return &application{
-		logger: slog.New(slog.DiscardHandler),
+		logger:         slog.New(slog.DiscardHandler),
+		snippets:       &mocks.SnippetModelMock{},
+		users:          &mocks.UserModelMock{},
+		templateCache:  templateCacheMock,
+		sessionManager: sessionManagerMock,
 	}
 }
 
