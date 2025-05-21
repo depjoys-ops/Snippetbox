@@ -1,6 +1,10 @@
 package mocks
 
-import "github.com/depjoys-ops/Snippetbox/internal/models"
+import (
+	"time"
+
+	"github.com/depjoys-ops/Snippetbox/internal/models"
+)
 
 type UserModelMock struct{}
 
@@ -28,4 +32,19 @@ func (m *UserModelMock) Exists(id int) (bool, error) {
 	default:
 		return false, nil
 	}
+}
+
+func (m *UserModelMock) Get(id int) (models.User, error) {
+	if id == 1 {
+		u := models.User{
+			ID:      1,
+			Name:    "Alice",
+			Email:   "alice@example.com",
+			Created: time.Now(),
+		}
+
+		return u, nil
+	}
+
+	return models.User{}, models.ErrNoRecord
 }
