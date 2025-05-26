@@ -2,6 +2,7 @@
 
 go mod tidy
 go mod verify
+golangci-lint run ./...
 govulncheck ./...
 gofmt -w .
 
